@@ -25,10 +25,28 @@ const itemArray = new Array(9).fill('empty');
 
 const App = () => {
   const [isCross, setIsCross] = useState(false);
-  const [winMsg, setWinMsg] = useState('ddd');
+  const [winMsg, setWinMsg] = useState('');
 
   const changeItem = (itemNumber) => {
-    //
+    if (winMsg) {
+      return Snackbar.show({
+        text: winMsg,
+        backgroundColor: '#000',
+        textColor: '#fff',
+      });
+    }
+
+    if (itemNumber[itemNumber] === 'empty') {
+      itemArray[itemNumber] = isCross ? 'cross' : 'circle';
+      setIsCross(!isCross);
+    } else {
+      return Snackbar.show({
+        text: 'Position is already filled',
+        backgroundColor: 'red',
+        textColor: '#fff',
+      });
+    }
+    checkIsWinner();
   };
 
   const reloadGame = () => {
@@ -38,7 +56,13 @@ const App = () => {
   };
 
   const checkIsWinner = () => {
-    //
+    if (
+      itemArray[0] === itemArray[1] &&
+      itemArray[1] === itemArray[2] &&
+      itemArray[0] !== 'empty'
+    ) {
+      setWinMsg(`${itemArray[0]} Won`);
+    }
   };
 
   return (
